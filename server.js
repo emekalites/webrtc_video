@@ -5,6 +5,8 @@ const io = require('socket.io')(server)
 
 app.use('/', express.static('public'))
 
+
+// signaling
 io.on('connection', (socket) => {
   socket.on('join', (roomId) => {
     const roomClients = io.sockets.adapter.rooms[roomId] || { length: 0 }
@@ -42,7 +44,8 @@ io.on('connection', (socket) => {
     console.log(`Broadcasting webrtc_ice_candidate event to peers in room ${event.roomId}`)
     socket.broadcast.to(event.roomId).emit('webrtc_ice_candidate', event)
   })
-})
+});
+// end signaling
 
 // START THE SERVER =================================================================
 const port = process.env.PORT || 3000
